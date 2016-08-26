@@ -1,5 +1,6 @@
 bin/pc-diskmanager
 share/applications/pc-diskmanager.desktop
+share/pixmaps/diskmanager.png
 %%DATADIR%%/i18n/ZManager_af.qm
 %%DATADIR%%/i18n/ZManager_ar.qm
 %%DATADIR%%/i18n/ZManager_az.qm
