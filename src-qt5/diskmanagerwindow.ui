@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DiskManagerWindow</class>
- <widget class="QMainWindow" name="DiskManagerWindow">
+ <class>diskmanagerWindow</class>
+ <widget class="QMainWindow" name="diskmanagerWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>589</width>
-    <height>520</height>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PCBSD Disk Manager</string>
+   <string>Disk Manager</string>
   </property>
   <property name="windowIcon">
    <iconset resource="diskmanagerres.qrc">
@@ -303,7 +303,8 @@
        <string>Refresh</string>
       </property>
       <property name="icon">
-       <iconset theme="reload"/>
+       <iconset theme="reload">
+        <normaloff>.</normaloff>.</iconset>
       </property>
      </widget>
     </item>

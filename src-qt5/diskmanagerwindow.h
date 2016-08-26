@@ -7,7 +7,7 @@
 #include <QHeaderView>
 
 namespace Ui {
-class ZManagerWindow;
+class diskmanagerWindow;
 }
 
 enum vdevStatus {
@@ -140,12 +140,12 @@ typedef struct {
 
 #define FSITEM_ALL      0xffff
 
-class ZManagerWindow : public QMainWindow
+class diskmanagerWindow : public QMainWindow
 {
     Q_OBJECT
 
 private:
-    Ui::ZManagerWindow *ui;
+    Ui::diskmanagerWindow *ui;
 
 public:
 
@@ -183,8 +183,8 @@ public:
 
     void ProgramInit();
     void GetCurrentTopology();
-    explicit ZManagerWindow(QWidget *parent = 0);
-    ~ZManagerWindow();
+    explicit diskmanagerWindow(QWidget *parent = 0);
+    ~diskmanagerWindow();
     
     // Disk management functions
     bool deviceCreatePartitionTable(vdev_t *device, int type);
@@ -201,6 +201,9 @@ public:
     bool processErrors(QStringList& output,QString command);
     bool processzpoolErrors(QStringList& output);
     bool processzfsErrors(QStringList& output);
+
+    //Utility functions
+    QStringList runShellCommand(QString cmd); //return the output of the command - split up by lines
 
 public slots:
     void slotSingleInstance();

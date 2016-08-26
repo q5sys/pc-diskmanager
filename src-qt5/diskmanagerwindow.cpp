@@ -8,7 +8,7 @@
 #include "dialogprop.h"
 #include "dialogfsprop.h"
 #include "dialogfscreate.h"
-#include <pcbsd-utils.h>
+
 #include <QDebug>
 #include <QIcon>
 #include <QString>
@@ -19,6 +19,8 @@
 #include <QPushButton>
 #include <QTreeWidgetItemIterator>
 #include <QToolButton>
+#include <QProcess>
+#include <QProcessEnvironment>
 
 diskmanagerWindow::diskmanagerWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -83,22 +85,22 @@ void diskmanagerWindow::slotSingleInstance()
 void diskmanagerWindow::GetCurrentTopology()
 {
     // RUN ALL REQUIRED PROCESSES AND GET THE RESULTS
-
-    QStringList a=pcbsd::Utils::runShellCommand("zpool status");    // GET ALL ACTIVE POOLS
-    QStringList i=pcbsd::Utils::runShellCommand("zpool import");    // GET ALL EXPORTED POOLS AVAILABLE
-    QStringList d=pcbsd::Utils::runShellCommand("zpool import -D");    // GET ALL DESTROYED POOLS READY TO RECOVER
-    QStringList g=pcbsd::Utils::runShellCommand("geom disk list");
-    QStringList h=pcbsd::Utils::runShellCommand("gpart list");
-    QStringList h2=pcbsd::Utils::runShellCommand("gpart show -p");
-    QStringList lbl=pcbsd::Utils::runShellCommand("glabel status");
-    QStringList fsid=pcbsd::Utils::runShellCommand("sh -c \"file -s /dev/da* /dev/ada*\"");
-    QStringList m=pcbsd::Utils::runShellCommand("mount");
-    QStringList ps=pcbsd::Utils::runShellCommand("sh -c \"ps -A -w -w | grep 'ntfs\\|ext4'\"");
+    //qDebug() << "Run commands to get info";
+    QStringList a=runShellCommand("zpool status");    // GET ALL ACTIVE POOLS
+    QStringList i=runShellCommand("zpool import");    // GET ALL EXPORTED POOLS AVAILABLE
+    QStringList d=runShellCommand("zpool import -D");    // GET ALL DESTROYED POOLS READY TO RECOVER
+    QStringList g=runShellCommand("geom disk list");
+    QStringList h=runShellCommand("gpart list");
+    QStringList h2=runShellCommand("gpart show -p");
+    QStringList lbl=runShellCommand("glabel status");
+    QStringList fsid=runShellCommand("sh -c \"file -s /dev/da* /dev/ada*\"");
+    QStringList m=runShellCommand("mount");
+    QStringList ps=runShellCommand("sh -c \"ps -A -w -w | grep 'ntfs\\|ext4'\"");
     QStringList prop;   // GET PROPERTIES FOR ALL POOLS ONCE WE HAVE A LIST OF POOLS
-    QStringList zfsl=pcbsd::Utils::runShellCommand("zfs list -H -t all");
-    QStringList zfspr=pcbsd::Utils::runShellCommand("zfs get -H all");
+    QStringList zfsl=runShellCommand("zfs list -H -t all");
+    QStringList zfspr=runShellCommand("zfs get -H all");
 
-
+    //qDebug() << " - clear existing topology";
     // CLEAR ALL EXISTING TOPOLOGY
     this->Pools.clear();
     this->Disks.clear();
@@ -109,7 +111,7 @@ void diskmanagerWindow::GetCurrentTopology()
     int state;
 
 
-
+    //qDebug() << " - start processing info";
     // BEGIN PROCESSING DISKS FROM GEOM
 
     idx=g.constBegin();
@@ -175,7 +177,7 @@ void diskmanagerWindow::GetCurrentTopology()
 
 
 
-
+    //qDebug() << " - start processing gpart info";
     // BEGIN PROCESSING PARTITIONS FROM GPART
 
     idx=h.constBegin();
@@ -403,7 +405,7 @@ void diskmanagerWindow::GetCurrentTopology()
 
             state=0;
         }
-
+   //qDebug() << " - start processing gpart show info";
     // GPART SHOW IS ONLY NEEDED BECAUSE GPART LIST
     // DOESN'T SHOW IF A DISK HAS A PARTITION TABLE
     // BUT NO PARTITIONS IN IT
@@ -442,7 +444,7 @@ void diskmanagerWindow::GetCurrentTopology()
 
 
 
-
+    //qDebug() << " - start processing glabel info";
     // GET LABELS FROM GLABEL
 
     idx=lbl.constBegin();
@@ -478,6 +480,7 @@ void diskmanagerWindow::GetCurrentTopology()
         ++idx;
     }
 
+    //qDebug() << " - start processing mount info";
     // GET MOUNT LOCATIONS FROM MOUNT
 
     idx=m.constBegin();
@@ -532,7 +535,7 @@ void diskmanagerWindow::GetCurrentTopology()
         ++idx;
     }
 
-
+    //qDebug() << " - start processing file system types";
     // GET FILE SYSTEM TYPES FROM FILES
 
 
@@ -739,7 +742,7 @@ void diskmanagerWindow::GetCurrentTopology()
     }
 
 
-
+    //qDebug() << " - start processing ps info";
     // GET MOUNT LOCATIONS FROM ps, FOR FUSE FILESYSTEMS ONLY
 
     idx=ps.constBegin();
@@ -801,7 +804,7 @@ void diskmanagerWindow::GetCurrentTopology()
         ++idx;
     }
 
-
+    //qDebug() << " - start processing pools";
     // FINISHED PROCESSING DEVICES
 
     // PROCESS THE POOL LIST
@@ -998,7 +1001,7 @@ void diskmanagerWindow::GetCurrentTopology()
     }
 
     // NOW THAT WE HAVE A LIST OF POOLS, GET PROPERTIES FOR ALL ACTIVE ZPOOLS
-
+    //qDebug() << " - get zpool properties";
     QString cmdline="zpool get all";
     zpool_t n;
 
@@ -1006,7 +1009,7 @@ void diskmanagerWindow::GetCurrentTopology()
         cmdline+= " \""+n.Name+"\"";
     }
 
-    prop=pcbsd::Utils::runShellCommand(cmdline);
+    prop=runShellCommand(cmdline);
 
 
 
@@ -1014,7 +1017,7 @@ void diskmanagerWindow::GetCurrentTopology()
 
 
     // PROCESS THE EXPORTED POOL LIST
-
+    //qDebug() << " - process pool properties";
     idx=i.constBegin();
 
     state=0;
@@ -1214,7 +1217,7 @@ void diskmanagerWindow::GetCurrentTopology()
 
 
     // PROCESS THE DESTROYED POOL LIST
-
+    //qDebug() << " - start processing destroyed pool list";
     idx=d.constBegin();
 
     state=0;
@@ -1501,6 +1504,7 @@ while(fspr!=zfspr.constEnd())
 
 void diskmanagerWindow::refreshState()
 {
+  //qDebug() << "Refresh State";
     QToolButton splash;
     splash.setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
     splash.setMinimumHeight(100);
@@ -1513,7 +1517,7 @@ void diskmanagerWindow::refreshState()
     splash.setIconSize(QSize(48,48));
     splash.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     splash.setWindowFlags(Qt::SplashScreen);
-
+  //qDebug() << " - Move Splash";
     splash.setParent(this);
 
     int x;
@@ -1537,16 +1541,16 @@ void diskmanagerWindow::refreshState()
 //    ui->deviceList->header()->setResizeMode(1,QHeaderView::ResizeToContents);
 
 
-
+  //qDebug() << " - Update ui";
     ui->zpoolList->clear();
     ui->deviceList->clear();
     ui->fspoolList->clear();
     ui->fsList->clear();
 
-
+  //qDebug() << " - get topology";
     GetCurrentTopology();
 
-
+  //qDebug() << " - show errors";
     // SHOW ERRORS
     if(Errors.count()>0) {
 	//Do not show the warning about unused feature flags on a pool
@@ -1562,7 +1566,7 @@ void diskmanagerWindow::refreshState()
     else     ui->frameStatus->setVisible(false);
 
 
-
+  //qDebug() << " - show pools";
     // ADD ALL POOLS
 
     if(Pools.count()!=0) {
@@ -2193,7 +2197,7 @@ bool diskmanagerWindow::deviceCreatePartitionTable(vdev_t *device,int type)
     if(type==2) cmd="gpart create -s bsd ";
     cmd+=device->Name;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmd);
+    QStringList a=runShellCommand(cmd);
 
     if(processErrors(a,"gpart")) return false;
 
@@ -2206,7 +2210,7 @@ bool diskmanagerWindow::deviceDestroyPartitionTable(vdev_t *device)
     cmd="gpart destroy ";
     cmd+=device->Name;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmd);
+    QStringList a=runShellCommand(cmd);
 
     if(processErrors(a,"gpart")) return false;
 
@@ -2225,7 +2229,7 @@ bool diskmanagerWindow::deviceUnmount(vdev_t * device)
     else cmdline+="/dev/"+device->Alias;
     }
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
 
     if(processErrors(a,"umount")) return false;
@@ -2268,7 +2272,7 @@ if(result) {
 
     cmdline += " \"" + mnt.getMountLocation()+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
 
     if(processErrors(a,"mount")) return false;
@@ -2308,7 +2312,7 @@ bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
 
         cmdline += " " + device->Name;
 
-        QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+        QStringList a=runShellCommand(cmdline);
 
         if(processErrors(a,"gpart")) return false;
 
@@ -2326,7 +2330,7 @@ bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
 
             cmdline="newfs /dev/"+ tmp.at(0);
 
-            QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+            QStringList b=runShellCommand(cmdline);
 
             if(processErrors(b,"newfs")) return false;
 
@@ -2336,7 +2340,7 @@ bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
 
                 cmdline="mkntfs -F -Q  /dev/"+ tmp.at(0);
 
-                QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+                QStringList b=runShellCommand(cmdline);
 
                 // TODO: PROPER ERROR PROCESSING FOR MKNTFS
                 //if(processErrors(b,"mkntfs")) return false;
@@ -2349,7 +2353,7 @@ bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
                 cmdline+=" -t "+fstype + " ";
                 cmdline+=" /dev/"+ tmp.at(0);
 
-                QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+                QStringList b=runShellCommand(cmdline);
 
                 // TODO: PROPER ERROR PROCESSING FOR MKE2FS
                 //if(processErrors(b,"mkntfs")) return false;
@@ -2360,7 +2364,7 @@ bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
 
                 cmdline="newfs_msdos -F 16 /dev/"+ tmp.at(0);
 
-                QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+                QStringList b=runShellCommand(cmdline);
 
                 // TODO: PROPER ERROR PROCESSING FOR newfs_msdos
                 //if(processErrors(b,"mkntfs")) return false;
@@ -2371,7 +2375,7 @@ bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
 
                 cmdline="newfs_msdos -F 32 /dev/"+ tmp.at(0);
 
-                QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+                QStringList b=runShellCommand(cmdline);
 
                 // TODO: PROPER ERROR PROCESSING FOR newfs_msdos
                 //if(processErrors(b,"mkntfs")) return false;
@@ -2405,7 +2409,7 @@ bool diskmanagerWindow::deviceDestroyPartition(vdev_t* device)
    cmdline+=tmp;
    cmdline += " " + getContainerDisk(device)->Name;
 
-   QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+   QStringList a=runShellCommand(cmdline);
 
    if(processErrors(a,"gpart")) return false;
 
@@ -2513,6 +2517,22 @@ bool diskmanagerWindow::processzfsErrors(QStringList& output)
 
 }
 
+QStringList diskmanagerWindow::runShellCommand(QString cmd){
+  QProcess p;  
+   //Make sure we use the system environment to properly read system variables, etc.
+   p.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+   //Merge the output channels to retrieve all output possible
+   p.setProcessChannelMode(QProcess::MergedChannels);   
+   p.start(cmd);
+   while(p.state()==QProcess::Starting || p.state() == QProcess::Running){
+     p.waitForFinished(200);
+     QCoreApplication::processEvents();
+   }
+   QString tmp = p.readAllStandardOutput();
+   if(tmp.endsWith("\n")){ tmp.chop(1); }
+  return tmp.split("\n");
+}
+
 
 QString diskmanagerWindow::getPoolProperty(zpool_t *pool,QString Property)
 {
@@ -2534,7 +2554,7 @@ void    diskmanagerWindow::setPoolProperty(zpool_t *pool,QString Property,QStrin
 
     cmdline+=" \""+pool->Name+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2566,7 +2586,7 @@ void diskmanagerWindow::zpoolCreate(bool b)
 
     foreach( arg, vdev) cmdline+=" "+arg;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2592,7 +2612,7 @@ void diskmanagerWindow::zpoolDestroy(bool b)
 
 //    qDebug() << cmdline;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2606,7 +2626,7 @@ void diskmanagerWindow::zpoolClear(bool b)
     QString cmdline;
     cmdline="zpool clear \""+ptr->Name+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(processzpoolErrors(a)) needRefresh=false;
     else needRefresh=true;
@@ -2702,7 +2722,7 @@ void diskmanagerWindow::zpoolRemoveDevice(bool b)
 
     cmdline+="\""+lastSelectedVdev->InPool+"\" "+lastSelectedVdev->Name;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2738,7 +2758,7 @@ void diskmanagerWindow::zpoolAttachDevice(bool b)
 
     foreach( arg, vdev) cmdline+=" "+arg;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2758,7 +2778,7 @@ void diskmanagerWindow::zpoolDetachDevice(bool b)
 
     cmdline+="\""+lastSelectedVdev->InPool+"\" "+lastSelectedVdev->Name;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2775,7 +2795,7 @@ void diskmanagerWindow::zpoolOfflineDevice(bool b)
 
     cmdline+="\""+lastSelectedVdev->InPool+"\" "+lastSelectedVdev->Name;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2789,7 +2809,7 @@ void diskmanagerWindow::zpoolOnlineDevice(bool b)
 
     cmdline+="\""+lastSelectedVdev->InPool+"\" "+lastSelectedVdev->Name;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 }
@@ -2802,7 +2822,7 @@ void diskmanagerWindow::zpoolScrub(bool b)
 
     cmdline+="\""+lastSelectedPool->Name+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2823,7 +2843,7 @@ void diskmanagerWindow::zpoolExport(bool b)
 
 //    qDebug() << cmdline;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2886,7 +2906,7 @@ void diskmanagerWindow::zpoolImport(bool b)
 //    qDebug() << cmdline;
 
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2935,13 +2955,13 @@ void diskmanagerWindow::zpoolRename(bool b)
         cmdline+="\""+lastSelectedPool->Name+"\"";
 
 //        qDebug() << cmdline;
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) {
         cmdline="zpool import -N "+id+" \""+dlg.getName()+"\"";
 
 //        qDebug() << cmdline;
-        a=pcbsd::Utils::runShellCommand(cmdline);
+        a=runShellCommand(cmdline);
 
         if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -2998,7 +3018,7 @@ void diskmanagerWindow::zpoolAdd(bool b)
 
     foreach( arg, vdev) cmdline+=" "+arg;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -3037,7 +3057,7 @@ void diskmanagerWindow::zpoolAddLog(bool b)
 
     foreach( arg, vdev) cmdline+=" "+arg;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -3076,7 +3096,7 @@ void diskmanagerWindow::zpoolAddCache(bool b)
 
     foreach( arg, vdev) cmdline+=" "+arg;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -3115,7 +3135,7 @@ void diskmanagerWindow::zpoolAddSpare(bool b)
 
     foreach( arg, vdev) cmdline+=" "+arg;
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzpoolErrors(a)) needRefresh=true;
 
@@ -3492,7 +3512,7 @@ void diskmanagerWindow::fsCreate(bool b)
 
         cmdline+=" \""+dlg.getPath()+"\"";
 
-        QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+        QStringList a=runShellCommand(cmdline);
 
         if(!processzfsErrors(a)) needRefresh=true;
 
@@ -3513,7 +3533,7 @@ void diskmanagerWindow::fsDestroy(bool b)
 
     cmdline+=" \""+lastSelectedFileSystem->FullPath+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     QString msg(tr("This operation cannot be undone and will cause data loss.\n\nYou are about to perform the following operation(s):\n\n"));
 
@@ -3535,7 +3555,7 @@ void diskmanagerWindow::fsDestroy(bool b)
 
     cmdline+=" \""+lastSelectedFileSystem->FullPath+"\"";
 
-    QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList b=runShellCommand(cmdline);
 
 
     if(!processzfsErrors(b)) needRefresh=true;
@@ -3566,7 +3586,7 @@ void diskmanagerWindow::fsSnapshot(bool b)
 
         cmdline+=" \""+dlg.getPath()+"\"";
 
-        QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+        QStringList a=runShellCommand(cmdline);
 
         if(!processzfsErrors(a)) needRefresh=true;
 
@@ -3609,7 +3629,7 @@ void diskmanagerWindow::fsRename(bool b)
         cmdline+=" \""+lastSelectedFileSystem->FullPath+"\"";
         cmdline+=" \""+dlg.getPath()+"\"";
 
-        QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+        QStringList a=runShellCommand(cmdline);
 
         if(!processzfsErrors(a)) needRefresh=true;
 
@@ -3629,7 +3649,7 @@ void diskmanagerWindow::fsPromote(bool b)
 
     cmdline+="\""+lastSelectedFileSystem->FullPath+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzfsErrors(a)) needRefresh=true;
 
@@ -3670,7 +3690,7 @@ void diskmanagerWindow::fsClone(bool b)
             QString newname=dlg.getPath();
             QString snapname=lastSelectedFileSystem->FullPath+"@"+newname.right(newname.size()-pos-1)+"_base";
             QString cmd2="zfs snapshot \""+snapname+"\"";
-            QStringList a=pcbsd::Utils::runShellCommand(cmd2);
+            QStringList a=runShellCommand(cmd2);
             if(processzfsErrors(a)) return;
 
             cmdline+=" \""+snapname+"\"";
@@ -3678,7 +3698,7 @@ void diskmanagerWindow::fsClone(bool b)
 
         cmdline+=" \""+dlg.getPath()+"\"";
 
-        QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+        QStringList a=runShellCommand(cmdline);
 
         if(!processzfsErrors(a)) needRefresh=true;
 
@@ -3714,7 +3734,7 @@ void diskmanagerWindow::fsRollback(bool b)
 
     if(result==QMessageBox::Yes) {
 
-    QStringList b=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList b=runShellCommand(cmdline);
 
 
     if(!processzfsErrors(b)) needRefresh=true;
@@ -3733,7 +3753,7 @@ void diskmanagerWindow::fsMount(bool b)
 
     cmdline+=" \""+lastSelectedFileSystem->FullPath+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
 
     if(!processzfsErrors(a)) needRefresh=true;
@@ -3751,7 +3771,7 @@ void diskmanagerWindow::fsUnmount(bool b)
 
     cmdline+=" \""+lastSelectedFileSystem->FullPath+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
 
     if(!processzfsErrors(a)) needRefresh=true;
@@ -3805,7 +3825,7 @@ void    diskmanagerWindow::setFSProperty(zfs_t *fs, QString Property, QString Va
 
     cmdline+=" \""+fs->FullPath+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzfsErrors(a)) needRefresh=true;
 
@@ -3823,7 +3843,7 @@ void    diskmanagerWindow::inheritFSProperty(zfs_t *fs,QString Property,bool rec
 
     cmdline+=" \""+fs->FullPath+"\"";
 
-    QStringList a=pcbsd::Utils::runShellCommand(cmdline);
+    QStringList a=runShellCommand(cmdline);
 
     if(!processzfsErrors(a)) needRefresh=true;
 

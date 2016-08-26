@@ -8,9 +8,6 @@ QT       += core gui widgets network svg
 
 CONFIG += qt warn_on
 
-LIBS	+= -L../libpcbsd -L/usr/local/lib -lpcbsd-ui -lpcbsd-utils
-INCLUDEPATH+= ../libpcbsd/utils ../libpcbsd/ui /usr/local/include
-
 TARGET = pc-diskmanager
 target.path = /usr/local/bin/
 
@@ -26,7 +23,8 @@ SOURCES += main.cpp\
     dialogname.cpp \
     dialogprop.cpp \
     dialogfscreate.cpp \
-    dialogfsprop.cpp
+    dialogfsprop.cpp \
+    pcbsd-SingleApplication.cpp
 
 HEADERS  += diskmanagerwindow.h \
     dialogpartition.h \
@@ -35,7 +33,8 @@ HEADERS  += diskmanagerwindow.h \
     dialogname.h \
     dialogprop.h \
     dialogfscreate.h \
-    dialogfsprop.h
+    dialogfsprop.h \
+    pcbsd-SingleApplication.h
 
 FORMS    += diskmanagerwindow.ui \
     dialogpartition.ui \
@@ -112,7 +111,7 @@ TRANSLATIONS =  i18n/diskmanager_af.ts \
                 i18n/diskmanager_zh_TW.ts \
                 i18n/diskmanager_zu.ts
 
-icons.path=/usr/local/share/pcbsd/icons
+icons.path=/usr/local/share/pixmaps
 icons.files=icons/diskmanager.png
 
 INSTALLS += target icons

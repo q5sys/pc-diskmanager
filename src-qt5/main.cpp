@@ -36,11 +36,8 @@ int main(int argc, char *argv[])
     qDebug() << "Locale:" << langCode;
     QTextCodec::setCodecForLocale( QTextCodec::codecForName("UTF-8") ); //Force Utf-8 compliance
     
-    DiskManagerWindow w;
-
-
+    diskmanagerWindow w;
     w.ProgramInit();
-
     w.show();
 
     QObject::connect(&a, SIGNAL(InputsAvailable(QStringList)), &w, SLOT(slotSingleInstance()) );
