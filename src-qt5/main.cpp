@@ -1,4 +1,4 @@
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 #include <QApplication>
 #include <QFile>
 #include <QDebug>
@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
     QTranslator translator;
     QLocale mylocale;
     QString langCode = mylocale.name();
-    if ( ! QFile::exists( PREFIX + "/share/pcbsd/i18n/ZManager_" + langCode + ".qm" ) )
+    if ( ! QFile::exists( PREFIX + "/share/pcbsd/i18n/DiskManager_" + langCode + ".qm" ) )
       langCode.truncate(langCode.indexOf("_"));
-    translator.load( QString("ZManager_") + langCode, PREFIX + "/share/pcbsd/i18n/" );
+    translator.load( QString("DiskManager_") + langCode, PREFIX + "/share/pcbsd/i18n/" );
     a.installTranslator( &translator );
     qDebug() << "Locale:" << langCode;
     QTextCodec::setCodecForLocale( QTextCodec::codecForName("UTF-8") ); //Force Utf-8 compliance
     
-    ZManagerWindow w;
+    DiskManagerWindow w;
 
 
     w.ProgramInit();

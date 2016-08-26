@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 
 namespace Ui {
 class DialogPartition;
@@ -15,7 +15,7 @@ class DialogPartition;
 
 class DialogPartition : public QDialog
 {
-    friend class ZManagerWindow;
+    friend class diskmanagerWindow;
     Q_OBJECT
     vdev_t *device;
     int granularity;

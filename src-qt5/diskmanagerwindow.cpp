@@ -1,6 +1,6 @@
 #include <QTimer>
-#include "zmanagerwindow.h"
-#include "ui_zmanagerwindow.h"
+#include "diskmanagerwindow.h"
+#include "ui_diskmanagerwindow.h"
 #include "dialogpartition.h"
 #include "dialogmount.h"
 #include "dialognewpool.h"
@@ -20,9 +20,9 @@
 #include <QTreeWidgetItemIterator>
 #include <QToolButton>
 
-ZManagerWindow::ZManagerWindow(QWidget *parent) :
+diskmanagerWindow::diskmanagerWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::ZManagerWindow)
+    ui(new Ui::diskmanagerWindow)
 {
 
     lastSelectedPool=NULL;
@@ -60,19 +60,19 @@ ZManagerWindow::ZManagerWindow(QWidget *parent) :
 
 }
 
-ZManagerWindow::~ZManagerWindow()
+diskmanagerWindow::~diskmanagerWindow()
 {
     delete ui;
 }
 
 
-void ZManagerWindow::ProgramInit()
+void diskmanagerWindow::ProgramInit()
 {
     // Perform initialization
     QTimer::singleShot(300,this,SLOT(refreshState()));
 }
 
-void ZManagerWindow::slotSingleInstance()
+void diskmanagerWindow::slotSingleInstance()
 {
     activateWindow();
 }
@@ -80,7 +80,7 @@ void ZManagerWindow::slotSingleInstance()
 
 // THIS IS THE MAIN FUNCTION THAT GATHERS ALL INFORMATION FROM THE BACKEND
 
-void ZManagerWindow::GetCurrentTopology()
+void diskmanagerWindow::GetCurrentTopology()
 {
     // RUN ALL REQUIRED PROCESSES AND GET THE RESULTS
 
@@ -1499,7 +1499,7 @@ while(fspr!=zfspr.constEnd())
 
 }
 
-void ZManagerWindow::refreshState()
+void diskmanagerWindow::refreshState()
 {
     QToolButton splash;
     splash.setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
@@ -1789,13 +1789,13 @@ else     {
 }
 
 
-bool ZManagerWindow::close()
+bool diskmanagerWindow::close()
 {
     return QMainWindow::close();
 }
 
 
-const QString ZManagerWindow::getStatusString(int status)
+const QString diskmanagerWindow::getStatusString(int status)
 {
     QString result;
 
@@ -1837,7 +1837,7 @@ const QString ZManagerWindow::getStatusString(int status)
 
 
 
-void ZManagerWindow::zpoolContextMenu(QPoint p)
+void diskmanagerWindow::zpoolContextMenu(QPoint p)
 {
     struct zactions zpoolmenu[]={
         /*  QString menutext        ,   int triggermask, triggerflags    ,  action_func slot */
@@ -1916,7 +1916,7 @@ void ZManagerWindow::zpoolContextMenu(QPoint p)
     if(needRefresh) refreshState();
 }
 
-void ZManagerWindow::deviceContextMenu(QPoint p)
+void diskmanagerWindow::deviceContextMenu(QPoint p)
 {
     QMenu m(tr("Device Menu"),this);
     QTreeWidgetItem *item=ui->deviceList->itemAt(p);
@@ -2019,7 +2019,7 @@ void ZManagerWindow::deviceContextMenu(QPoint p)
 
 
 
-vdev_t *ZManagerWindow::getDiskbyName(QString name)
+vdev_t *diskmanagerWindow::getDiskbyName(QString name)
 {
     QList<vdev_t>::const_iterator it=this->Disks.constBegin();
 
@@ -2060,7 +2060,7 @@ vdev_t *ZManagerWindow::getDiskbyName(QString name)
 }
 
 
-vdev_t *ZManagerWindow::getContainerDisk(vdev_t* device)
+vdev_t *diskmanagerWindow::getContainerDisk(vdev_t* device)
 {
 
     QList<vdev_t>::const_iterator it=this->Disks.constBegin();
@@ -2097,7 +2097,7 @@ vdev_t *ZManagerWindow::getContainerDisk(vdev_t* device)
 }
 
 
-vdev_t *ZManagerWindow::getContainerGroup(vdev_t* device)
+vdev_t *diskmanagerWindow::getContainerGroup(vdev_t* device)
 {
 
     QList<zpool_t>::const_iterator it=this->Pools.constBegin();
@@ -2137,7 +2137,7 @@ vdev_t *ZManagerWindow::getContainerGroup(vdev_t* device)
 
 
 
-zpool_t *ZManagerWindow::getZpoolbyName(QString name,int index)
+zpool_t *diskmanagerWindow::getZpoolbyName(QString name,int index)
 {
 
     if(index>=0) return (zpool_t *)&(this->Pools.at(index));
@@ -2155,7 +2155,7 @@ while(it!=this->Pools.constEnd())
 return NULL;
 
 }
-vdev_t *ZManagerWindow::getVDevbyName(QString name)
+vdev_t *diskmanagerWindow::getVDevbyName(QString name)
 {
 QList<zpool_t>::const_iterator it=this->Pools.constBegin();
 
@@ -2185,7 +2185,7 @@ return NULL;
 
 
 
-bool ZManagerWindow::deviceCreatePartitionTable(vdev_t *device,int type)
+bool diskmanagerWindow::deviceCreatePartitionTable(vdev_t *device,int type)
 {
     QString cmd;
     if(type==0) cmd="gpart create -s mbr ";
@@ -2200,7 +2200,7 @@ bool ZManagerWindow::deviceCreatePartitionTable(vdev_t *device,int type)
     return true;
 }
 
-bool ZManagerWindow::deviceDestroyPartitionTable(vdev_t *device)
+bool diskmanagerWindow::deviceDestroyPartitionTable(vdev_t *device)
 {
     QString cmd;
     cmd="gpart destroy ";
@@ -2212,7 +2212,7 @@ bool ZManagerWindow::deviceDestroyPartitionTable(vdev_t *device)
 
     return true;
 }
-bool ZManagerWindow::deviceUnmount(vdev_t * device)
+bool diskmanagerWindow::deviceUnmount(vdev_t * device)
 {
     QString cmdline="umount ";
 
@@ -2233,7 +2233,7 @@ bool ZManagerWindow::deviceUnmount(vdev_t * device)
 
     return true;
 }
-bool ZManagerWindow::deviceMount(vdev_t * device)
+bool diskmanagerWindow::deviceMount(vdev_t * device)
 {
 
 DialogMount mnt;
@@ -2278,7 +2278,7 @@ if(result) {
 
     return true;
 }
-bool ZManagerWindow::deviceAddPartition(vdev_t *device)
+bool diskmanagerWindow::deviceAddPartition(vdev_t *device)
 {
     DialogPartition part;
 
@@ -2388,7 +2388,7 @@ bool ZManagerWindow::deviceAddPartition(vdev_t *device)
 
     return false;
 }
-bool ZManagerWindow::deviceDestroyPartition(vdev_t* device)
+bool diskmanagerWindow::deviceDestroyPartition(vdev_t* device)
 {
 
     QMessageBox msg(QMessageBox::Warning,tr("Warning"),tr("This operation cannot be undone.\nOK to destroy the slice/partition?"),QMessageBox::Yes|QMessageBox::No);
@@ -2413,7 +2413,7 @@ bool ZManagerWindow::deviceDestroyPartition(vdev_t* device)
 }
 
 
-bool ZManagerWindow::processErrors(QStringList& output,QString command)
+bool diskmanagerWindow::processErrors(QStringList& output,QString command)
 {
     QStringList::const_iterator it=output.constBegin();
     QString start;
@@ -2449,7 +2449,7 @@ bool ZManagerWindow::processErrors(QStringList& output,QString command)
     return false;
 }
 
-bool ZManagerWindow::processzpoolErrors(QStringList& output)
+bool diskmanagerWindow::processzpoolErrors(QStringList& output)
 {
     QStringList::const_iterator it=output.constBegin();
     QString errormsg;
@@ -2481,7 +2481,7 @@ bool ZManagerWindow::processzpoolErrors(QStringList& output)
 
 }
 
-bool ZManagerWindow::processzfsErrors(QStringList& output)
+bool diskmanagerWindow::processzfsErrors(QStringList& output)
 {
     QStringList::const_iterator it=output.constBegin();
     QString errormsg;
@@ -2514,7 +2514,7 @@ bool ZManagerWindow::processzfsErrors(QStringList& output)
 }
 
 
-QString ZManagerWindow::getPoolProperty(zpool_t *pool,QString Property)
+QString diskmanagerWindow::getPoolProperty(zpool_t *pool,QString Property)
 {
     zprop_t tmp;
 
@@ -2526,7 +2526,7 @@ QString ZManagerWindow::getPoolProperty(zpool_t *pool,QString Property)
 
 }
 
-void    ZManagerWindow::setPoolProperty(zpool_t *pool,QString Property,QString Value)
+void    diskmanagerWindow::setPoolProperty(zpool_t *pool,QString Property,QString Value)
 {
     QString cmdline="zpool set ";
 
@@ -2542,7 +2542,7 @@ void    ZManagerWindow::setPoolProperty(zpool_t *pool,QString Property,QString V
 }
 
 
-void ZManagerWindow::zpoolCreate(bool b)
+void diskmanagerWindow::zpoolCreate(bool b)
 {
 
     Q_UNUSED(b);
@@ -2573,7 +2573,7 @@ void ZManagerWindow::zpoolCreate(bool b)
     }
 }
 
-void ZManagerWindow::zpoolDestroy(bool b)
+void diskmanagerWindow::zpoolDestroy(bool b)
 {
     Q_UNUSED(b);
 
@@ -2598,7 +2598,7 @@ void ZManagerWindow::zpoolDestroy(bool b)
 
 }
 
-void ZManagerWindow::zpoolClear(bool b)
+void diskmanagerWindow::zpoolClear(bool b)
 {
     Q_UNUSED(b);
 
@@ -2616,7 +2616,7 @@ void ZManagerWindow::zpoolClear(bool b)
 
 
 
-void ZManagerWindow::on_toolButton_clicked()
+void diskmanagerWindow::on_toolButton_clicked()
 {
     lastSelectedPool=getZpoolbyName(ui->poolLabel->text());
 
@@ -2634,7 +2634,7 @@ void ZManagerWindow::on_toolButton_clicked()
 // ANALYZE THE VDEV, AND RETURN A SERIES OF FLAGS (ITEM_XXXXX) TO BE USED
 // FOR EASIER HANDLING OF THE DIFFERENT KINDS OF VDEVS
 
-int ZManagerWindow::zpoolGetVDEVType(vdev_t *dev)
+int diskmanagerWindow::zpoolGetVDEVType(vdev_t *dev)
 {
     int result=0;
     if(getDiskbyName(dev->Name)!=NULL) result|=ITEM_ISDISK;
@@ -2663,7 +2663,7 @@ int ZManagerWindow::zpoolGetVDEVType(vdev_t *dev)
 }
 
 
-void ZManagerWindow::zpoolEditProperties(bool)
+void diskmanagerWindow::zpoolEditProperties(bool)
 {
     DialogProp dlg;
 
@@ -2694,7 +2694,7 @@ void ZManagerWindow::zpoolEditProperties(bool)
     return;
 }
 
-void ZManagerWindow::zpoolRemoveDevice(bool b)
+void diskmanagerWindow::zpoolRemoveDevice(bool b)
 {
     Q_UNUSED(b);
 
@@ -2709,7 +2709,7 @@ void ZManagerWindow::zpoolRemoveDevice(bool b)
 
 }
 
-void ZManagerWindow::zpoolAttachDevice(bool b)
+void diskmanagerWindow::zpoolAttachDevice(bool b)
 {
     Q_UNUSED(b);
 
@@ -2750,7 +2750,7 @@ void ZManagerWindow::zpoolAttachDevice(bool b)
 
 }
 
-void ZManagerWindow::zpoolDetachDevice(bool b)
+void diskmanagerWindow::zpoolDetachDevice(bool b)
 {
     Q_UNUSED(b);
 
@@ -2767,7 +2767,7 @@ void ZManagerWindow::zpoolDetachDevice(bool b)
 
 
 
-void ZManagerWindow::zpoolOfflineDevice(bool b)
+void diskmanagerWindow::zpoolOfflineDevice(bool b)
 {
     Q_UNUSED(b);
 
@@ -2781,7 +2781,7 @@ void ZManagerWindow::zpoolOfflineDevice(bool b)
 
 }
 
-void ZManagerWindow::zpoolOnlineDevice(bool b)
+void diskmanagerWindow::zpoolOnlineDevice(bool b)
 {
     Q_UNUSED(b);
 
@@ -2794,7 +2794,7 @@ void ZManagerWindow::zpoolOnlineDevice(bool b)
     if(!processzpoolErrors(a)) needRefresh=true;
 }
 
-void ZManagerWindow::zpoolScrub(bool b)
+void diskmanagerWindow::zpoolScrub(bool b)
 {
     Q_UNUSED(b);
 
@@ -2808,7 +2808,7 @@ void ZManagerWindow::zpoolScrub(bool b)
 
 }
 
-void ZManagerWindow::zpoolExport(bool b)
+void diskmanagerWindow::zpoolExport(bool b)
 {
     Q_UNUSED(b);
 
@@ -2829,7 +2829,7 @@ void ZManagerWindow::zpoolExport(bool b)
 
 }
 
-void ZManagerWindow::zpoolImport(bool b)
+void diskmanagerWindow::zpoolImport(bool b)
 {
     Q_UNUSED(b);
 
@@ -2894,7 +2894,7 @@ void ZManagerWindow::zpoolImport(bool b)
 
 }
 
-void ZManagerWindow::zpoolRename(bool b)
+void diskmanagerWindow::zpoolRename(bool b)
 {
     Q_UNUSED(b);
 
@@ -2952,7 +2952,7 @@ void ZManagerWindow::zpoolRename(bool b)
 }
 
 
-void ZManagerWindow::zpoolAdd(bool b)
+void diskmanagerWindow::zpoolAdd(bool b)
 {
     Q_UNUSED(b);
 
@@ -3009,7 +3009,7 @@ void ZManagerWindow::zpoolAdd(bool b)
     return;
 }
 
-void ZManagerWindow::zpoolAddLog(bool b)
+void diskmanagerWindow::zpoolAddLog(bool b)
 {
     Q_UNUSED(b);
 
@@ -3048,7 +3048,7 @@ void ZManagerWindow::zpoolAddLog(bool b)
     return;
 
 }
-void ZManagerWindow::zpoolAddCache(bool b)
+void diskmanagerWindow::zpoolAddCache(bool b)
 {
     Q_UNUSED(b);
 
@@ -3087,7 +3087,7 @@ void ZManagerWindow::zpoolAddCache(bool b)
     return;
 
 }
-void ZManagerWindow::zpoolAddSpare(bool b)
+void diskmanagerWindow::zpoolAddSpare(bool b)
 {
     Q_UNUSED(b);
 
@@ -3174,7 +3174,7 @@ int printUnits(unsigned long long bytes)
 
 
 
-void ZManagerWindow::on_dropDownButton_clicked()
+void diskmanagerWindow::on_dropDownButton_clicked()
 {
     ui->fspoolList->setMaximumHeight(1<<24);
     ui->fspoolList->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -3182,7 +3182,7 @@ void ZManagerWindow::on_dropDownButton_clicked()
     updateGeometry();
 }
 
-void ZManagerWindow::on_fspoolList_clicked(const QModelIndex &index)
+void diskmanagerWindow::on_fspoolList_clicked(const QModelIndex &index)
 {
     Q_UNUSED(index);
 
@@ -3197,7 +3197,7 @@ void ZManagerWindow::on_fspoolList_clicked(const QModelIndex &index)
 }
 
 
-zfs_t *ZManagerWindow::getFileSystembyPath(QString path, int index)
+zfs_t *diskmanagerWindow::getFileSystembyPath(QString path, int index)
 {
 
     if(index>=0) return (zfs_t *)&(this->FileSystems.at(index));
@@ -3217,7 +3217,7 @@ zfs_t *ZManagerWindow::getFileSystembyPath(QString path, int index)
 }
 
 
-QTreeWidgetItem *ZManagerWindow::getParentFileSystem(QString path)
+QTreeWidgetItem *diskmanagerWindow::getParentFileSystem(QString path)
 {
     QTreeWidgetItemIterator it(ui->fsList);
     int len=-1;
@@ -3237,7 +3237,7 @@ QTreeWidgetItem *ZManagerWindow::getParentFileSystem(QString path)
     return NULL;
 }
 
-void ZManagerWindow::on_fspoolList_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void diskmanagerWindow::on_fspoolList_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     Q_UNUSED(previous);
 
@@ -3342,7 +3342,7 @@ void ZManagerWindow::on_fspoolList_currentItemChanged(QTreeWidgetItem *current, 
 }
 
 
-zprop_t *ZManagerWindow::getFileSystemProperty(zfs_t *fs,QString prop)
+zprop_t *diskmanagerWindow::getFileSystemProperty(zfs_t *fs,QString prop)
 {
     QList<zprop_t>::iterator it=fs->Properties.begin();
 
@@ -3356,7 +3356,7 @@ zprop_t *ZManagerWindow::getFileSystemProperty(zfs_t *fs,QString prop)
 }
 
 
-void ZManagerWindow::filesystemContextMenu(QPoint p)
+void diskmanagerWindow::filesystemContextMenu(QPoint p)
 {
     Q_UNUSED(p);
 
@@ -3434,7 +3434,7 @@ void ZManagerWindow::filesystemContextMenu(QPoint p)
 
 }
 
-int ZManagerWindow::getFileSystemFlags(zfs_t *fs)
+int diskmanagerWindow::getFileSystemFlags(zfs_t *fs)
 {
     int flags=0;
     zprop_t *prop;
@@ -3464,7 +3464,7 @@ int ZManagerWindow::getFileSystemFlags(zfs_t *fs)
 
 
 
-void ZManagerWindow::fsCreate(bool b)
+void diskmanagerWindow::fsCreate(bool b)
 {
     Q_UNUSED(b);
 
@@ -3502,7 +3502,7 @@ void ZManagerWindow::fsCreate(bool b)
 
 }
 
-void ZManagerWindow::fsDestroy(bool b)
+void diskmanagerWindow::fsDestroy(bool b)
 {
     Q_UNUSED(b);
 
@@ -3546,7 +3546,7 @@ void ZManagerWindow::fsDestroy(bool b)
 
 
 
-void ZManagerWindow::fsSnapshot(bool b)
+void diskmanagerWindow::fsSnapshot(bool b)
 {
     Q_UNUSED(b);
 
@@ -3576,7 +3576,7 @@ void ZManagerWindow::fsSnapshot(bool b)
 
 
 }
-void ZManagerWindow::fsRename(bool b)
+void diskmanagerWindow::fsRename(bool b)
 {
     Q_UNUSED(b);
 
@@ -3619,7 +3619,7 @@ void ZManagerWindow::fsRename(bool b)
 
 
 }
-void ZManagerWindow::fsPromote(bool b)
+void diskmanagerWindow::fsPromote(bool b)
 {
     Q_UNUSED(b);
 
@@ -3634,7 +3634,7 @@ void ZManagerWindow::fsPromote(bool b)
     if(!processzfsErrors(a)) needRefresh=true;
 
 }
-void ZManagerWindow::fsClone(bool b)
+void diskmanagerWindow::fsClone(bool b)
 {
     Q_UNUSED(b);
 
@@ -3691,7 +3691,7 @@ void ZManagerWindow::fsClone(bool b)
 
 
 
-void ZManagerWindow::fsRollback(bool b)
+void diskmanagerWindow::fsRollback(bool b)
 {
     Q_UNUSED(b);
 
@@ -3722,7 +3722,7 @@ void ZManagerWindow::fsRollback(bool b)
 }
 
 
-void ZManagerWindow::fsMount(bool b)
+void diskmanagerWindow::fsMount(bool b)
 {
     Q_UNUSED(b);
 
@@ -3741,7 +3741,7 @@ void ZManagerWindow::fsMount(bool b)
 
 }
 
-void ZManagerWindow::fsUnmount(bool b)
+void diskmanagerWindow::fsUnmount(bool b)
 {
     Q_UNUSED(b);
     if(!lastSelectedFileSystem)  return;
@@ -3759,7 +3759,7 @@ void ZManagerWindow::fsUnmount(bool b)
 }
 
 
-void ZManagerWindow::fsEditProps(bool)
+void diskmanagerWindow::fsEditProps(bool)
 {
     DialogFSProp dlg;
 
@@ -3797,7 +3797,7 @@ void ZManagerWindow::fsEditProps(bool)
 }
 
 
-void    ZManagerWindow::setFSProperty(zfs_t *fs, QString Property, QString Value)
+void    diskmanagerWindow::setFSProperty(zfs_t *fs, QString Property, QString Value)
 {
     QString cmdline="zfs set ";
 
@@ -3813,7 +3813,7 @@ void    ZManagerWindow::setFSProperty(zfs_t *fs, QString Property, QString Value
 }
 
 
-void    ZManagerWindow::inheritFSProperty(zfs_t *fs,QString Property,bool recursive)
+void    diskmanagerWindow::inheritFSProperty(zfs_t *fs,QString Property,bool recursive)
 {
     QString cmdline="zfs inherit ";
 
@@ -3831,7 +3831,7 @@ void    ZManagerWindow::inheritFSProperty(zfs_t *fs,QString Property,bool recurs
 }
 
 
-void ZManagerWindow::on_refreshButton_clicked()
+void diskmanagerWindow::on_refreshButton_clicked()
 {
  this->refreshState();
 }

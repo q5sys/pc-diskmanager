@@ -1,6 +1,6 @@
 #ifndef DIALOGFSPROP_H
 #define DIALOGFSPROP_H
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 #include <QDialog>
 #include <QAbstractButton>
 #include <QDialogButtonBox>

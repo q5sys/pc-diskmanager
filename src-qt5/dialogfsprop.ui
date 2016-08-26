@@ -64,7 +64,7 @@
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="zmanagerres.qrc">
+      <iconset resource="diskmanagerres.qrc">
        <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
      </property>
      <property name="iconSize">
@@ -107,7 +107,7 @@
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="zmanagerres.qrc">
+      <iconset resource="diskmanagerres.qrc">
        <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
      </property>
      <property name="iconSize">
@@ -127,7 +127,7 @@
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="zmanagerres.qrc">
+      <iconset resource="diskmanagerres.qrc">
        <normaloff>:/icons/edit-text-frame-update.png</normaloff>:/icons/edit-text-frame-update.png</iconset>
      </property>
      <property name="iconSize">
@@ -147,7 +147,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="zmanagerres.qrc">
+      <iconset resource="diskmanagerres.qrc">
        <normaloff>:/icons/edit-undo.png</normaloff>:/icons/edit-undo.png</iconset>
      </property>
      <property name="iconSize">
@@ -161,7 +161,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="zmanagerres.qrc"/>
+  <include location="diskmanagerres.qrc"/>
  </resources>
  <connections>
   <connection>

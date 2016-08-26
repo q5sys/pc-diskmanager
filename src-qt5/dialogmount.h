@@ -2,7 +2,7 @@
 #define DIALOGMOUNT_H
 
 #include <QDialog>
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 
 namespace Ui {
 class DialogMount;

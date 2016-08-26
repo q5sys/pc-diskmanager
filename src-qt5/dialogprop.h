@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 namespace Ui {
 class DialogProp;
 }

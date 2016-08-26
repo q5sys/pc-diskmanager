@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ZManagerWindow</class>
- <widget class="QMainWindow" name="ZManagerWindow">
+ <class>DiskManagerWindow</class>
+ <widget class="QMainWindow" name="DiskManagerWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,7 +14,7 @@
    <string>PCBSD Disk Manager</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="zmanagerres.qrc">
+   <iconset resource="diskmanagerres.qrc">
     <normaloff>:/icons/server-database.png</normaloff>:/icons/server-database.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -32,7 +32,7 @@
       </property>
       <widget class="QWidget" name="tabDisk">
        <attribute name="icon">
-        <iconset resource="zmanagerres.qrc">
+        <iconset resource="diskmanagerres.qrc">
          <normaloff>:/icons/partitionmanager.png</normaloff>:/icons/partitionmanager.png</iconset>
        </attribute>
        <attribute name="title">
@@ -60,7 +60,7 @@
       </widget>
       <widget class="QWidget" name="tabZPools">
        <attribute name="icon">
-        <iconset resource="zmanagerres.qrc">
+        <iconset resource="diskmanagerres.qrc">
          <normaloff>:/icons/server-database.png</normaloff>:/icons/server-database.png</iconset>
        </attribute>
        <attribute name="title">
@@ -152,7 +152,7 @@
               <string>Clear Error</string>
              </property>
              <property name="icon">
-              <iconset resource="zmanagerres.qrc">
+              <iconset resource="diskmanagerres.qrc">
                <normaloff>:/icons/task-attention.png</normaloff>:/icons/task-attention.png</iconset>
              </property>
              <property name="iconSize">
@@ -192,7 +192,7 @@
       </widget>
       <widget class="QWidget" name="tabZFS">
        <attribute name="icon">
-        <iconset resource="zmanagerres.qrc">
+        <iconset resource="diskmanagerres.qrc">
          <normaloff>:/icons/kexi.png</normaloff>:/icons/kexi.png</iconset>
        </attribute>
        <attribute name="title">
@@ -253,7 +253,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="zmanagerres.qrc">
+           <iconset resource="diskmanagerres.qrc">
             <normaloff>:/icons/arrow-down-double.png</normaloff>:/icons/arrow-down-double.png</iconset>
           </property>
           <property name="iconSize">
@@ -331,7 +331,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="zmanagerres.qrc"/>
+  <include location="diskmanagerres.qrc"/>
  </resources>
  <connections/>
 </ui>

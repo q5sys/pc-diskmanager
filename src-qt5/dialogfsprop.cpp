@@ -1,4 +1,4 @@
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 #include "dialogfsprop.h"
 #include "ui_dialogfsprop.h"
 #include <QTreeWidget>

@@ -26,7 +26,7 @@
    <string>New Filesystem</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="zmanagerres.qrc">
+   <iconset resource="diskmanagerres.qrc">
     <normaloff>:/icons/kexi.png</normaloff>:/icons/kexi.png</iconset>
   </property>
   <property name="sizeGripEnabled">
@@ -289,7 +289,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="zmanagerres.qrc"/>
+  <include location="diskmanagerres.qrc"/>
  </resources>
  <connections>
   <connection>

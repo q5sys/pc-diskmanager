@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
-#include "zmanagerwindow.h"
+#include "diskmanagerwindow.h"
 
 namespace Ui {
 class DialogNewPool;

@@ -17,7 +17,7 @@
    <string>Add Partition</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="zmanagerres.qrc">
+   <iconset resource="diskmanagerres.qrc">
     <normaloff>:/icons/kdf.png</normaloff>:/icons/kdf.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -329,7 +329,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="zmanagerres.qrc"/>
+  <include location="diskmanagerres.qrc"/>
  </resources>
  <connections>
   <connection>

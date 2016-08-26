@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'zmanagerwindow.ui'
+** Form generated from reading UI file 'diskmanagermanagerwindow.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_ZMANAGERWINDOW_H
-#define UI_ZMANAGERWINDOW_H
+#ifndef UI_DISKMANAGERWINDOW_H
+#define UI_DISKMANAGERWINDOW_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -29,7 +29,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_ZManagerWindow
+class Ui_DiskManagerWindow
 {
 public:
     QWidget *centralWidget;
@@ -57,15 +57,15 @@ public:
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
-    void setupUi(QMainWindow *ZManagerWindow)
+    void setupUi(QMainWindow *DiskManagerWindow)
     {
-        if (ZManagerWindow->objectName().isEmpty())
-            ZManagerWindow->setObjectName(QStringLiteral("ZManagerWindow"));
-        ZManagerWindow->resize(589, 520);
+        if (DiskManagerWindow->objectName().isEmpty())
+            DiskManagerWindow->setObjectName(QStringLiteral("DiskManagerWindow"));
+        DiskManagerWindow->resize(589, 520);
         QIcon icon;
         icon.addFile(QStringLiteral(":/icons/server-database.png"), QSize(), QIcon::Normal, QIcon::Off);
-        ZManagerWindow->setWindowIcon(icon);
-        centralWidget = new QWidget(ZManagerWindow);
+        DiskManagerWindow->setWindowIcon(icon);
+        centralWidget = new QWidget(DiskManagerWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_4 = new QGridLayout(centralWidget);
         gridLayout_4->setSpacing(6);
@@ -211,57 +211,57 @@ public:
 
         gridLayout_4->addWidget(refreshButton, 5, 1, 1, 1);
 
-        ZManagerWindow->setCentralWidget(centralWidget);
-        menuBar = new QMenuBar(ZManagerWindow);
+        DiskManagerWindow->setCentralWidget(centralWidget);
+        menuBar = new QMenuBar(DiskManagerWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 589, 22));
-        ZManagerWindow->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(ZManagerWindow);
+        DiskManagerWindow->setMenuBar(menuBar);
+        mainToolBar = new QToolBar(DiskManagerWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        ZManagerWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
-        statusBar = new QStatusBar(ZManagerWindow);
+        DiskManagerWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
+        statusBar = new QStatusBar(DiskManagerWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
-        ZManagerWindow->setStatusBar(statusBar);
+        DiskManagerWindow->setStatusBar(statusBar);
 
-        retranslateUi(ZManagerWindow);
+        retranslateUi(DiskManagerWindow);
 
         tabContainer->setCurrentIndex(0);
 
 
-        QMetaObject::connectSlotsByName(ZManagerWindow);
+        QMetaObject::connectSlotsByName(DiskManagerWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *ZManagerWindow)
+    void retranslateUi(QMainWindow *DiskManagerWindow)
     {
-        ZManagerWindow->setWindowTitle(QApplication::translate("ZManagerWindow", "PCBSD Disk Manager", 0));
+        DiskManagerWindow->setWindowTitle(QApplication::translate("DiskManagerWindow", "PCBSD Disk Manager", 0));
         QTreeWidgetItem *___qtreewidgetitem = deviceList->headerItem();
-        ___qtreewidgetitem->setText(1, QApplication::translate("ZManagerWindow", "State", 0));
-        ___qtreewidgetitem->setText(0, QApplication::translate("ZManagerWindow", "Device", 0));
-        tabContainer->setTabText(tabContainer->indexOf(tabDisk), QApplication::translate("ZManagerWindow", "Disks", 0));
+        ___qtreewidgetitem->setText(1, QApplication::translate("DiskManagerWindow", "State", 0));
+        ___qtreewidgetitem->setText(0, QApplication::translate("DiskManagerWindow", "Device", 0));
+        tabContainer->setTabText(tabContainer->indexOf(tabDisk), QApplication::translate("DiskManagerWindow", "Disks", 0));
         QTreeWidgetItem *___qtreewidgetitem1 = zpoolList->headerItem();
-        ___qtreewidgetitem1->setText(1, QApplication::translate("ZManagerWindow", "State", 0));
-        ___qtreewidgetitem1->setText(0, QApplication::translate("ZManagerWindow", "Pool Name", 0));
-        label->setText(QApplication::translate("ZManagerWindow", "Status:", 0));
-        statusLabel->setText(QApplication::translate("ZManagerWindow", "TextLabel", 0));
-        toolButton->setText(QApplication::translate("ZManagerWindow", "Clear Error", 0));
-        poolLabel->setText(QApplication::translate("ZManagerWindow", "poolname", 0));
-        tabContainer->setTabText(tabContainer->indexOf(tabZPools), QApplication::translate("ZManagerWindow", "ZFS Pools", 0));
+        ___qtreewidgetitem1->setText(1, QApplication::translate("DiskManagerWindow", "State", 0));
+        ___qtreewidgetitem1->setText(0, QApplication::translate("DiskManagerWindow", "Pool Name", 0));
+        label->setText(QApplication::translate("DiskManagerWindow", "Status:", 0));
+        statusLabel->setText(QApplication::translate("DiskManagerWindow", "TextLabel", 0));
+        toolButton->setText(QApplication::translate("DiskManagerWindow", "Clear Error", 0));
+        poolLabel->setText(QApplication::translate("DiskManagerWindow", "poolname", 0));
+        tabContainer->setTabText(tabContainer->indexOf(tabZPools), QApplication::translate("DiskManagerWindow", "ZFS Pools", 0));
         QTreeWidgetItem *___qtreewidgetitem2 = fspoolList->headerItem();
-        ___qtreewidgetitem2->setText(0, QApplication::translate("ZManagerWindow", "Pool Name", 0));
+        ___qtreewidgetitem2->setText(0, QApplication::translate("DiskManagerWindow", "Pool Name", 0));
         dropDownButton->setText(QString());
         QTreeWidgetItem *___qtreewidgetitem3 = fsList->headerItem();
-        ___qtreewidgetitem3->setText(1, QApplication::translate("ZManagerWindow", "Status", 0));
-        ___qtreewidgetitem3->setText(0, QApplication::translate("ZManagerWindow", "Filesystems", 0));
-        tabContainer->setTabText(tabContainer->indexOf(tabZFS), QApplication::translate("ZManagerWindow", "ZFS Filesystems", 0));
-        refreshButton->setText(QApplication::translate("ZManagerWindow", "Refresh", 0));
+        ___qtreewidgetitem3->setText(1, QApplication::translate("DiskManagerWindow", "Status", 0));
+        ___qtreewidgetitem3->setText(0, QApplication::translate("DiskManagerWindow", "Filesystems", 0));
+        tabContainer->setTabText(tabContainer->indexOf(tabZFS), QApplication::translate("DiskManagerWindow", "ZFS Filesystems", 0));
+        refreshButton->setText(QApplication::translate("DiskManagerWindow", "Refresh", 0));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class ZManagerWindow: public Ui_ZManagerWindow {};
+    class DiskManagerWindow: public Ui_DiskManagerWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_ZMANAGERWINDOW_H
+#endif // UI_DiskManagerWINDOW_H
