@@ -45,76 +45,85 @@ FORMS    += diskmanagerwindow.ui \
     dialogfscreate.ui \
     dialogfsprop.ui
 
-TRANSLATIONS =  i18n/diskmanager_af.ts \
-                i18n/diskmanager_ar.ts \
-                i18n/diskmanager_az.ts \
-                i18n/diskmanager_bg.ts \
-                i18n/diskmanager_bn.ts \
-                i18n/diskmanager_bs.ts \
-                i18n/diskmanager_ca.ts \
-                i18n/diskmanager_cs.ts \
-                i18n/diskmanager_cy.ts \
-                i18n/diskmanager_da.ts \
-                i18n/diskmanager_de.ts \
-                i18n/diskmanager_el.ts \
-                i18n/diskmanager_en_GB.ts \
-                i18n/diskmanager_en_ZA.ts \
-                i18n/diskmanager_es.ts \
-                i18n/diskmanager_et.ts \
-                i18n/diskmanager_eu.ts \
-                i18n/diskmanager_fa.ts \
-                i18n/diskmanager_fi.ts \
-                i18n/diskmanager_fr.ts \
-                i18n/diskmanager_fr_CA.ts \
-                i18n/diskmanager_fur.ts \
-                i18n/diskmanager_gl.ts \
-                i18n/diskmanager_he.ts \
-                i18n/diskmanager_hi.ts \
-                i18n/diskmanager_hr.ts \
-                i18n/diskmanager_hu.ts \
-                i18n/diskmanager_id.ts \
-                i18n/diskmanager_is.ts \
-                i18n/diskmanager_it.ts \
-                i18n/diskmanager_ja.ts \
-                i18n/diskmanager_ka.ts \
-                i18n/diskmanager_ko.ts \
-                i18n/diskmanager_lt.ts \
-                i18n/diskmanager_lv.ts \
-                i18n/diskmanager_mk.ts \
-                i18n/diskmanager_mn.ts \
-                i18n/diskmanager_ms.ts \
-                i18n/diskmanager_mt.ts \
-                i18n/diskmanager_nb.ts \
-                i18n/diskmanager_ne.ts \
-                i18n/diskmanager_nl.ts \
-                i18n/diskmanager_pa.ts \
-                i18n/diskmanager_pl.ts \
-                i18n/diskmanager_pt.ts \
-                i18n/diskmanager_pt_BR.ts \
-                i18n/diskmanager_ro.ts \
-                i18n/diskmanager_ru.ts \
-                i18n/diskmanager_sk.ts \
-                i18n/diskmanager_sl.ts \
-                i18n/diskmanager_sr.ts \
-                i18n/diskmanager_sv.ts \
-                i18n/diskmanager_sw.ts \
-                i18n/diskmanager_ta.ts \
-                i18n/diskmanager_tg.ts \
-                i18n/diskmanager_th.ts \
-                i18n/diskmanager_tr.ts \
-                i18n/diskmanager_uk.ts \
-                i18n/diskmanager_ur.ts \
-                i18n/diskmanager_uz.ts \
-                i18n/diskmanager_vi.ts \
-                i18n/diskmanager_zh_CN.ts \
-                i18n/diskmanager_zh_HK.ts \
-                i18n/diskmanager_zh_TW.ts \
-                i18n/diskmanager_zu.ts
+TRANSLATIONS =  i18n/ZManager_af.ts \
+                i18n/ZManager_ar.ts \
+                i18n/ZManager_az.ts \
+                i18n/ZManager_bg.ts \
+                i18n/ZManager_bn.ts \
+                i18n/ZManager_bs.ts \
+                i18n/ZManager_ca.ts \
+                i18n/ZManager_cs.ts \
+                i18n/ZManager_cy.ts \
+                i18n/ZManager_da.ts \
+                i18n/ZManager_de.ts \
+                i18n/ZManager_el.ts \
+                i18n/ZManager_en_GB.ts \
+                i18n/ZManager_en_ZA.ts \
+                i18n/ZManager_es.ts \
+                i18n/ZManager_et.ts \
+                i18n/ZManager_eu.ts \
+                i18n/ZManager_fa.ts \
+                i18n/ZManager_fi.ts \
+                i18n/ZManager_fr.ts \
+                i18n/ZManager_fr_CA.ts \
+                i18n/ZManager_fur.ts \
+                i18n/ZManager_gl.ts \
+                i18n/ZManager_he.ts \
+                i18n/ZManager_hi.ts \
+                i18n/ZManager_hr.ts \
+                i18n/ZManager_hu.ts \
+                i18n/ZManager_id.ts \
+                i18n/ZManager_is.ts \
+                i18n/ZManager_it.ts \
+                i18n/ZManager_ja.ts \
+                i18n/ZManager_ka.ts \
+                i18n/ZManager_ko.ts \
+                i18n/ZManager_lt.ts \
+                i18n/ZManager_lv.ts \
+                i18n/ZManager_mk.ts \
+                i18n/ZManager_mn.ts \
+                i18n/ZManager_ms.ts \
+                i18n/ZManager_mt.ts \
+                i18n/ZManager_nb.ts \
+                i18n/ZManager_ne.ts \
+                i18n/ZManager_nl.ts \
+                i18n/ZManager_pa.ts \
+                i18n/ZManager_pl.ts \
+                i18n/ZManager_pt.ts \
+                i18n/ZManager_pt_BR.ts \
+                i18n/ZManager_ro.ts \
+                i18n/ZManager_ru.ts \
+                i18n/ZManager_sk.ts \
+                i18n/ZManager_sl.ts \
+                i18n/ZManager_sr.ts \
+                i18n/ZManager_sv.ts \
+                i18n/ZManager_sw.ts \
+                i18n/ZManager_ta.ts \
+                i18n/ZManager_tg.ts \
+                i18n/ZManager_th.ts \
+                i18n/ZManager_tr.ts \
+                i18n/ZManager_uk.ts \
+                i18n/ZManager_ur.ts \
+                i18n/ZManager_uz.ts \
+                i18n/ZManager_vi.ts \
+                i18n/ZManager_zh_CN.ts \
+                i18n/ZManager_zh_HK.ts \
+                i18n/ZManager_zh_TW.ts \
+                i18n/ZManager_zu.ts
+
+isEmpty(LRELEASE){ LRELEASE = $$[QT_INSTALL_BINS]/lrelease }
+
+dotrans.path=/usr/local/share/pc-diskmanager/i18n/
+dotrans.extra=cd i18n && $${LRELEASE} -nounfinished *.ts && cp *.qm $(INSTALL_ROOT)/usr/local/share/pc-diskmanager/i18n/
 
 icons.path=/usr/local/share/pixmaps
 icons.files=icons/diskmanager.png
 
-INSTALLS += target icons
+desktop.files=pc-diskmanager.desktop
+desktop.path=$${INSTALL_ROOT}/usr/local/share/applications
+
+
+INSTALLS += target icons desktop dotrans
 
 RESOURCES += \
     diskmanagerres.qrc

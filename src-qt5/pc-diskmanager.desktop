@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Disk Manager
+Exec=qsudo pc-diskmanager
+TryExec=pc-diskmanager
+Terminal=false
+Type=Application
+Icon=diskmanager
+Categories=Utility;
+GenericName=Manage devices and partitions
