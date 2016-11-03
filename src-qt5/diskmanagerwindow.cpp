@@ -1712,7 +1712,7 @@ void diskmanagerWindow::refreshState()
                             if((*partidx).FSType.isEmpty()) subitem->setText(1,tr("Blank/Unknown"));
                             else subitem->setText(1,tr("Unmounted"));
                         }
-                    } else subitem->setText(1,tr("ZPool: ") + (*partidx).InPool);
+                    } else subitem->setText(1,tr("Pool: ") + (*partidx).InPool);
                 } else subitem->setText(1,tr("Partitioned")); }
             else subitem->setText(1,tr("Mounted: ")+(*partidx).MountPoint);
 
@@ -1738,7 +1738,7 @@ void diskmanagerWindow::refreshState()
                             if((*part2idx).FSType.isEmpty()) subsubitem->setText(1,tr("Blank/Unknown"));
                             else subsubitem->setText(1,tr("Unmounted"));
                         }
-                    } else subsubitem->setText(1,tr("ZPool: ") + (*part2idx).InPool);
+                    } else subsubitem->setText(1,tr("Pool: ") + (*part2idx).InPool);
                 }
                 else subsubitem->setText(1,tr("Mounted: ")+(*part2idx).MountPoint);
 
@@ -1875,7 +1875,7 @@ void diskmanagerWindow::zpoolContextMenu(QPoint p)
     int flags=0;
     int idx;
 
-    QMenu m(tr("zpool Menu"),this);
+    QMenu m(tr("Pool Menu"),this);
 
     QTreeWidgetItem *item=ui->zpoolList->itemAt(p);
 
@@ -1933,7 +1933,7 @@ void diskmanagerWindow::deviceContextMenu(QPoint p)
 
     if(!dev->InPool.isEmpty()) {
         // DISK IS IN A POOL, NOTHING TO DO UNTIL IT'S REMOVED
-        m.addAction(tr("Manage zpool ")+dev->InPool)->setData(QVariant(9));
+        m.addAction(tr("Manage Pool ")+dev->InPool)->setData(QVariant(9));
     }
     else {
     if(!dev->MountPoint.isEmpty()) m.addAction(tr("Unmount"))->setData(QVariant(1));  // OFFER TO UNMOUNT IF PARTITION IS MOUNTED
@@ -2569,7 +2569,7 @@ void diskmanagerWindow::zpoolCreate(bool b)
     DialogNewPool dlg;
 
     dlg.setDevices(&Disks);
-    dlg.setTitle(tr("Create new zpool"));
+    dlg.setTitle(tr("Create new pool"));
 
     int result=dlg.exec();
 
@@ -2980,7 +2980,7 @@ void diskmanagerWindow::zpoolAdd(bool b)
 
     dlg.setDevices(&Disks);
 
-    dlg.setTitle(tr("Add more devices to zpool"));
+    dlg.setTitle(tr("Add more devices to pool"));
     dlg.setName(lastSelectedPool->Name);
 
     if(lastSelectedPool->Type=="striped") dlg.setType(DialogNewPool::DISK_STRIPE);
@@ -3037,7 +3037,7 @@ void diskmanagerWindow::zpoolAddLog(bool b)
 
     dlg.setDevices(&Disks);
 
-    dlg.setTitle(tr("Add log devices to zpool"));
+    dlg.setTitle(tr("Add log devices to pool"));
     dlg.setName(lastSelectedPool->Name);
 
     dlg.setType(DialogNewPool::DISK_LOG);
@@ -3076,7 +3076,7 @@ void diskmanagerWindow::zpoolAddCache(bool b)
 
     dlg.setDevices(&Disks);
 
-    dlg.setTitle(tr("Add cache devices to zpool"));
+    dlg.setTitle(tr("Add cache devices to pool"));
     dlg.setName(lastSelectedPool->Name);
 
     dlg.setType(DialogNewPool::DISK_CACHE);
@@ -3115,7 +3115,7 @@ void diskmanagerWindow::zpoolAddSpare(bool b)
 
     dlg.setDevices(&Disks);
 
-    dlg.setTitle(tr("Add spare devices to zpool"));
+    dlg.setTitle(tr("Add spare devices to pool"));
     dlg.setName(lastSelectedPool->Name);
 
     dlg.setType(DialogNewPool::DISK_SPARE);
