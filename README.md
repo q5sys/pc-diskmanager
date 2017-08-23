@@ -1,4 +1,4 @@
-# pc-diskmanager
+# pc-diskmanager [DEPRECATED]
 TrueOS Disk Manager Qt GUI
 
 **General Project Information: Table of Contents**
