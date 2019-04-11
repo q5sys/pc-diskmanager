@@ -14,6 +14,7 @@ share/pixmaps/diskmanager.png
 %%DATADIR%%/i18n/ZManager_de.qm
 %%DATADIR%%/i18n/ZManager_el.qm
 %%DATADIR%%/i18n/ZManager_en_GB.qm
+%%DATADIR%%/i18n/ZManager_en_AU.qm
 %%DATADIR%%/i18n/ZManager_en_ZA.qm
 %%DATADIR%%/i18n/ZManager_es.qm
 %%DATADIR%%/i18n/ZManager_et.qm

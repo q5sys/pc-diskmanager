@@ -58,6 +58,7 @@ TRANSLATIONS =  i18n/ZManager_af.ts \
                 i18n/ZManager_de.ts \
                 i18n/ZManager_el.ts \
                 i18n/ZManager_en_GB.ts \
+                i18n/ZManager_en_AU.ts \
                 i18n/ZManager_en_ZA.ts \
                 i18n/ZManager_es.ts \
                 i18n/ZManager_et.ts \
